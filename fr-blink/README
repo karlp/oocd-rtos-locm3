@@ -1,0 +1,15 @@
+freertos blinking via a task and a timer, using libopencm3
+
+When it's "working" you should see things like this:
+
+(gdb) info threads
+  Id   Target Id         Frame 
+* 1    Thread 536873160 "" (Name: IDLE, State: Running) prvCheckTasksWaitingTermination ()
+    at /home/karlp/src/FreeRTOSV8.2.3/FreeRTOS/Source/tasks.c:3038
+  2    Thread 536872312 "" (Name: green.blink) vPortYield ()
+    at /home/karlp/src/FreeRTOSV8.2.3/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c:376
+  3    Thread 536873768 "" (Name: Tmr Svc) vPortYield ()
+    at /home/karlp/src/FreeRTOSV8.2.3/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c:376
+(gdb)
+
+and things like "run" should work as expected.

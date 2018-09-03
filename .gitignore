@@ -1,0 +1,5 @@
+bin/
+generated.*.ld
+*.elf
+swo.dump.log
+
