@@ -11,4 +11,7 @@ FreeRTOS + libopencm3.  See the README and Makefile there.
   * Freertos 10.0.1 [fail]
   * Freertos 10.1.0 [fail]
 
+## nuttx-blink
+NuttX, see the README there.
 
+  * NuttX 7.25 ~sort of works, if you're generous.
