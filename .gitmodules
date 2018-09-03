@@ -1,3 +1,9 @@
 [submodule "libopencm3"]
 	path = libopencm3
 	url = git@github.com:libopencm3/libopencm3.git
+[submodule "nuttx-blink/nuttx"]
+	path = nuttx-blink/nuttx
+	url = https://bitbucket.org/nuttx/nuttx.git
+[submodule "nuttx-blink/apps"]
+	path = nuttx-blink/apps
+	url = https://bitbucket.org/nuttx/apps.git

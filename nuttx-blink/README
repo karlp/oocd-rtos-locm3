@@ -1,0 +1,54 @@
+
+
+Needs recent enough openocd to have the nuttx support.
+
+Tested with openocd version: v0.10.0-523-g2a3b709a
+Testing with nuttx 7.25, saved config is attached, but doesn't work to rebuild (yet)
+Using the gdbinit code listed in 9ec306e95a07ca9a5a72
+
+## Building
+
+./configure.sh -l  XXX will fixme when I have it portable rebuilding. til this, this is just status.
+
+~sortof works. thread count is correct, everything else is useless, no backtrace, no names, no states
+
+
+  ps on nsh:
+nsh> ps
+  PID PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK   STACK COMMAND
+    0   0 FIFO     Kthread N-- Ready              00000000 000000 Idle Task
+    1 100 FIFO     Task    --- Running            00000000 002028 init
+nsh>
+
+
+(gdb) info threads
+  Id   Target Id         Frame 
+* 1    Thread 536871020 "" (Name: , pid:0, INVALID) up_idle () at chip/stm32_idle.c:212
+  2    Thread 268436144 "" (Name:) 0x00000000 in ?? ()
+(gdb) c
+Continuing.
+
+<<< here we use the "nsh" to start the "leds" application.
+
+  PID PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK   STACK COMMAND
+    0   0 FIFO     Kthread N-- Ready              00000000 000000 Idle Task
+    1 100 FIFO     Task    --- Running            00000000 002028 init
+    3 100 FIFO     Task    --- Waiting  Signal    00000000 002020 led_daemon
+nsh> 
+
+<<<< and back to gdb
+
+^C[New Thread 268445408]
+
+Thread 1 "" received signal SIGINT, Interrupt.
+up_idle () at chip/stm32_idle.c:212
+212	}
+(gdb) info threads
+  Id   Target Id         Frame 
+* 1    Thread 536871020 "" (Name: , pid:0, INVALID) up_idle () at chip/stm32_idle.c:212
+  2    Thread 268436144 "" (Name:) 0x00000000 in ?? ()
+  3    Thread 268445408 "" (Name:) 0x00000000 in ?? ()
+(gdb) 
+
+
+
