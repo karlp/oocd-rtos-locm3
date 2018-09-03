@@ -13,3 +13,31 @@ When it's "working" you should see things like this:
 (gdb)
 
 and things like "run" should work as expected.
+
+When it's not working, you get things like this: (and you'll notice bad things happening on the oocd -d3 console)
+
+(gdb) c
+Continuing.
+^C
+Program received signal SIGINT, Interrupt.
+[Switching to Thread 536873160]
+(gdb) info threads
+No threads.
+(gdb) run 
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Can't kill process
+(gdb) 
+
+
+Download and extract freertos zips from: https://sourceforge.net/projects/freertos/files/FreeRTOS/
+
+Tested openocd version: v0.10.0-523-g2a3b709a
+
+Freertos 8.2.x:  Working both blinks and thread info
+Freertos 9.0.0:  Working blinks, gdb broken as thread info corrupt
+Freertos 10.0.1: Working blinks, gdb broken as thread info corrupt
+Freertos 10.1.0: working blinks, fails to detect freertos.
+
+For freertos 10.1.0, the failure to even detect freertos has been patched in freertos,
+but even after manually applying, it remains broken.
