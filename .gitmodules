@@ -7,3 +7,6 @@
 [submodule "nuttx-blink/apps"]
 	path = nuttx-blink/apps
 	url = https://bitbucket.org/nuttx/apps.git
+[submodule "cmsis-rtos-rtx/CMSIS_5"]
+	path = cmsis-rtos-rtx/CMSIS_5
+	url = git@github.com:ARM-software/CMSIS_5.git
