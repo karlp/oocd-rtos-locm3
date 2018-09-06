@@ -3,12 +3,17 @@
 Needs recent enough openocd to have the nuttx support.
 
 Tested with openocd version: v0.10.0-523-g2a3b709a
-Testing with nuttx 7.25, saved config is attached, but doesn't work to rebuild (yet)
+Testing with nuttx 7.25.
 Using the gdbinit code listed in 9ec306e95a07ca9a5a72
+included here as nuttx.oocd.gdb
 
 ## Building
 
-./configure.sh -l  XXX will fixme when I have it portable rebuilding. til this, this is just status.
+mkdir nuttx/configs/stm32f4discovery/fake-external
+cp stm32f4discovery-blink.defconfig nuttx/configs/stm32f4discovery/fake-external/defconfig
+cd nuttx
+./tools/configure.sh -l  configs/stm32f4discovery/fake-external
+make
 
 ~sortof works. thread count is correct, everything else is useless, no backtrace, no names, no states
 
