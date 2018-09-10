@@ -71,6 +71,18 @@ static void taskGreenBlink(void *args)
 int main(void)
 {
 	rcc_clock_setup_pll(&rcc_clock_config[RCC_CLOCK_VRANGE1_HSI_PLL_32MHZ]);
+	/* Leaving this at zero is also "no sub groups"
+	 * Explicitly setting it to 3 just matches the number of
+	 * priorities available on cm3 but serves no other purpose than
+	 * to confuse the reader and be less portable to cm0.
+	scb_set_priority_grouping(SCB_AIRCR_PRIGROUP_GROUP16_NOSUB);
+	 */
+	/* CMSIS-RTOS2 just asks that systick, pendsv and svc are all equal priority.
+	 * _ALL_ handlers are at priority 0 at reset, so there's nothing to do.
+	 * We just need to make sure that any _application_ irqs we install are
+	 * at a lower priority (higher number) than 0.
+	 */
+
 	gpio_setup();
 	osKernelInitialize();
 #if defined (LED_GREEN_PORT)
