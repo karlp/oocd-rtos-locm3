@@ -38,6 +38,8 @@ Freertos 8.2.x:  Working both blinks and thread info
 Freertos 9.0.0:  Working blinks, gdb broken as thread info corrupt
 Freertos 10.0.1: Working blinks, gdb broken as thread info corrupt
 Freertos 10.1.0: working blinks, fails to detect freertos.
+Freertos 10.1.1: working blinks, detects, but broken operation, "Error: Error reading first thread item location in FreeRTOS thread list"
+Freertos 10.2.1:  as 10.1.1, unless you have patch: http://openocd.zylin.com/#/c/5273/1
 
 For freertos 10.1.0, the failure to even detect freertos has been patched in freertos,
 but even after manually applying, it remains broken.
