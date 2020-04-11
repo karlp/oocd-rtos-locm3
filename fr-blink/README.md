@@ -19,6 +19,7 @@ Originally this repo was to work out what really did and didn't work after seein
 various inconsistencies and problems with the rtos support.  For reference, with
 working rtos support, you should see things like this:
 
+```
 (gdb) info threads
   Id   Target Id         Frame 
 * 1    Thread 536873160 "" (Name: IDLE, State: Running) prvCheckTasksWaitingTermination ()
@@ -28,11 +29,13 @@ working rtos support, you should see things like this:
   3    Thread 536873768 "" (Name: Tmr Svc) vPortYield ()
     at /home/karlp/src/FreeRTOSV8.2.3/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c:376
 (gdb)
+```
 
 and things like "run" should work as expected.
 
 When it's not working, you get things like this: (and you'll notice bad things happening on the oocd -d3 console)
 
+```
 (gdb) c
 Continuing.
 ^C
@@ -45,6 +48,6 @@ The program being debugged has been started already.
 Start it from the beginning? (y or n) y
 Can't kill process
 (gdb) 
-
+```
 
 Download and extract freertos zips from: https://sourceforge.net/projects/freertos/files/FreeRTOS/
