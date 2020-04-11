@@ -1,6 +1,23 @@
-freertos blinking via a task and a timer, using libopencm3
+### freertos blinking via a task and a timer, using libopencm3
 
-When it's "working" you should see things like this:
+## Status 
+
+ * Freertos 8.2.x: working both blinks and thread info
+ * Freertos 9.0.0: working both
+ * Freertos 10.0.1: working both
+ * Freertos 10.1.0: blink works, thread support broken because of freertos bug. (see below)
+ * Freertos 10.2.1: working both
+ * Freertos 10.3.0: working both
+
+You _must_ be using the FreeRTOS-openocd.c file from after v0.10.0 or later.
+(My earlier test code here had been imported from various places and used
+an old buggy helper. See http://openocd.zylin.com/#/c/5577
+
+## Older notes.
+
+Originally this repo was to work out what really did and didn't work after seeing
+various inconsistencies and problems with the rtos support.  For reference, with
+working rtos support, you should see things like this:
 
 (gdb) info threads
   Id   Target Id         Frame 
@@ -31,15 +48,3 @@ Can't kill process
 
 
 Download and extract freertos zips from: https://sourceforge.net/projects/freertos/files/FreeRTOS/
-
-Tested openocd version: v0.10.0-523-g2a3b709a
-
-Freertos 8.2.x:  Working both blinks and thread info
-Freertos 9.0.0:  Working blinks, gdb broken as thread info corrupt
-Freertos 10.0.1: Working blinks, gdb broken as thread info corrupt
-Freertos 10.1.0: working blinks, fails to detect freertos.
-Freertos 10.1.1: working blinks, detects, but broken operation, "Error: Error reading first thread item location in FreeRTOS thread list"
-Freertos 10.2.1:  as 10.1.1, unless you have patch: http://openocd.zylin.com/#/c/5273/1
-
-For freertos 10.1.0, the failure to even detect freertos has been patched in freertos,
-but even after manually applying, it remains broken.
