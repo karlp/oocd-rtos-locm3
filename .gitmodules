@@ -10,3 +10,6 @@
 [submodule "cmsis-rtos-rtx/CMSIS_5"]
 	path = cmsis-rtos-rtx/CMSIS_5
 	url = git@github.com:ARM-software/CMSIS_5.git
+[submodule "extern/cherryusb"]
+	path = extern/cherryusb
+	url = https://github.com/cherry-embedded/CherryUSB.git
