@@ -20,7 +20,7 @@
 #include "task.h"
 
 #if (tskKERNEL_VERSION_MAJOR >= 10) && (tskKERNEL_VERSION_MINOR >= 4)
-#warning Sweet, you don't need this workaround anymore
+#pragma message "Sweet, you don't need this workaround anymore"
 #else
 const int USED uxTopUsedPriority = configMAX_PRIORITIES - 1;
 #endif

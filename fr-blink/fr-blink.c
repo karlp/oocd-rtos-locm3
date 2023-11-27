@@ -6,7 +6,11 @@
  */
 
 #include <assert.h>
+#include <errno.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <unistd.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
@@ -15,13 +19,18 @@
 #include <libopencm3/cm3/nvic.h>
 #include <libopencm3/cm3/scb.h>
 #include <libopencm3/cm3/systick.h>
-#include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
+#include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/usart.h>
 
 #define LED_BLUE_PORT           GPIOB
 #define LED_BLUE_PIN            GPIO7
 #define LED_GREEN_PORT          GPIOB
 #define LED_GREEN_PIN           GPIO14
+
+#define USART_CONSOLE		USART3
+
+int _write(int file, char *ptr, int len);
 
 static void gpio_setup(void)
 {
@@ -31,6 +40,50 @@ static void gpio_setup(void)
 #if defined(LED_GREEN_PORT)
 	gpio_mode_setup(LED_GREEN_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LED_GREEN_PIN);
 #endif
+	/* USART */ 
+	rcc_periph_clock_enable(RCC_GPIOD);
+	rcc_periph_clock_enable(RCC_USART3);
+}
+
+static void usart_setup(void)
+{
+	gpio_mode_setup(GPIOD, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO8);
+	gpio_set_af(GPIOD, GPIO_AF7, GPIO8);
+
+	usart_set_baudrate(USART_CONSOLE, 115200);
+	usart_set_databits(USART_CONSOLE, 8);
+	usart_set_stopbits(USART_CONSOLE, USART_STOPBITS_1);
+	usart_set_mode(USART_CONSOLE, USART_MODE_TX);
+	usart_set_parity(USART_CONSOLE, USART_PARITY_NONE);
+	usart_set_flow_control(USART_CONSOLE, USART_FLOWCONTROL_NONE);
+
+	/* Finally enable the USART. */
+	usart_enable(USART_CONSOLE);
+}
+
+/**
+ * Use USART_CONSOLE as a console.
+ * This is a syscall for newlib
+ * @param file
+ * @param ptr
+ * @param len
+ * @return
+ */
+int _write(int file, char *ptr, int len)
+{
+	int i;
+
+	if (file == STDOUT_FILENO || file == STDERR_FILENO) {
+		for (i = 0; i < len; i++) {
+			if (ptr[i] == '\n') {
+				usart_send_blocking(USART_CONSOLE, '\r');
+			}
+			usart_send_blocking(USART_CONSOLE, ptr[i]);
+		}
+		return i;
+	}
+	errno = EIO;
+	return -1;
 }
 
 static void prvTimerBlue(TimerHandle_t xTimer)
@@ -43,9 +96,12 @@ static void prvTimerBlue(TimerHandle_t xTimer)
 static void prvTaskGreenBlink1(void *pvParameters)
 {
 	(void) pvParameters;
+	int i = 0;
 	while (1) {
 		vTaskDelay(portTICK_PERIOD_MS * 1000);
 		gpio_toggle(LED_GREEN_PORT, LED_GREEN_PIN);
+		i++;
+		printf("lol: %d\n", i);
 	}
 
 	/* Tasks must not attempt to return from their implementing
@@ -65,7 +121,9 @@ int main(void)
 	//rcc_clock_setup_pll(&rcc_clock_config[RCC_CLOCK_VRANGE1_HSI_PLL_32MHZ]);
 	rcc_clock_setup_pll(&rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_180MHZ]);
 	gpio_setup();
+	usart_setup();
 	scb_set_priority_grouping(SCB_AIRCR_PRIGROUP_GROUP16_NOSUB);
+	printf("pre rtos...\n");
 
 #if defined (LED_GREEN_PORT)
 	xTaskCreate(prvTaskGreenBlink1, "green.blink", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
