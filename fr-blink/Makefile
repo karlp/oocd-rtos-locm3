@@ -7,11 +7,15 @@ PROJECT	    = fr-blink
 #FREERTOS_DIR = /home/karlp/src/FreeRTOSv10.0.1/FreeRTOS
 #FREERTOS_DIR = /home/karlp/src/FreeRTOSv10.1.0/FreeRTOS
 #FREERTOS_DIR = /home/karlp/src/FreeRTOSv10.2.1/FreeRTOS
-FREERTOS_DIR = /home/karlp/src/FreeRTOSv10.3.0/FreeRTOS
-FREERTOS_PORT = $(FREERTOS_DIR)/Source/portable/GCC/ARM_CM3
-FREERTOS_INC = $(FREERTOS_DIR)/Source/include
-FREERTOS_SRC = $(FREERTOS_DIR)/Source
-FREERTOS_MMG = $(FREERTOS_DIR)/Source/portable/MemMang
+#FREERTOS_PORT = $(FREERTOS_DIR)/Source/portable/GCC/ARM_CM3
+#FREERTOS_INC = $(FREERTOS_DIR)/Source/include
+#FREERTOS_SRC = $(FREERTOS_DIR)/Source
+#FREERTOS_MMG = $(FREERTOS_DIR)/Source/portable/MemMang
+FREERTOS_DIR = /home/karlp/src/FreeRTOS-KernelV10.6.1
+FREERTOS_PORT = $(FREERTOS_DIR)/portable/GCC/ARM_CM3
+FREERTOS_INC = $(FREERTOS_DIR)/include
+FREERTOS_SRC = $(FREERTOS_DIR)/
+FREERTOS_MMG = $(FREERTOS_DIR)/portable/MemMang
 FREERTOS_SRCS = list.c queue.c tasks.c timers.c port.c heap_1.c
 FREERTOS_SRCS += FreeRTOS-openocd.c
 
@@ -26,7 +30,7 @@ CFILES = $(PROJECT).c
 CFILES += $(FREERTOS_SRCS)
 
 OPENCM3_DIR=../libopencm3
-DEVICE=stm32l151xb
+DEVICE=stm32f429zi
 OOCD_FILE = openocd.stm32l1-generic.cfg
 include ../rules.mk
 

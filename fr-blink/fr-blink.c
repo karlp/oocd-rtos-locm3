@@ -19,9 +19,9 @@
 #include <libopencm3/stm32/gpio.h>
 
 #define LED_BLUE_PORT           GPIOB
-#define LED_BLUE_PIN            GPIO6
+#define LED_BLUE_PIN            GPIO7
 #define LED_GREEN_PORT          GPIOB
-#define LED_GREEN_PIN           GPIO7
+#define LED_GREEN_PIN           GPIO14
 
 static void gpio_setup(void)
 {
@@ -62,7 +62,8 @@ static TimerHandle_t xBlueTimer;
 
 int main(void)
 {
-	rcc_clock_setup_pll(&rcc_clock_config[RCC_CLOCK_VRANGE1_HSI_PLL_32MHZ]);
+	//rcc_clock_setup_pll(&rcc_clock_config[RCC_CLOCK_VRANGE1_HSI_PLL_32MHZ]);
+	rcc_clock_setup_pll(&rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_180MHZ]);
 	gpio_setup();
 	scb_set_priority_grouping(SCB_AIRCR_PRIGROUP_GROUP16_NOSUB);
 
